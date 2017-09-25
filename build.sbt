@@ -3,7 +3,7 @@ name := "my_scala_scaffold"
 //autogenerate from dynver
 //version := "0.1"
 
-scalaVersion := "2.11.11"
+scalaVersion in ThisBuild := "2.11.11"
 
 /**
   * common settings
@@ -58,4 +58,12 @@ lazy val root = (project in file("."))
   .settings(commonRuntimeSettings: _*)
   .settings(commonDependencies)
 
+
+lazy val avro_spec = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.sksamuel.avro4s" %% "avro4s-core" % "1.8.0"
+    )
+  )
+  .dependsOn(root)
 
