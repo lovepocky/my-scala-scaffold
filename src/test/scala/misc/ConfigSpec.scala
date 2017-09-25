@@ -14,7 +14,7 @@ class ConfigSpec extends FlatSpec with LazyLogging {
       */
     val standard = ConfigFactory.load()
     assert(
-      standard.getString("spec.include.field") == "override2"
+      standard.getString("spec.include.field") == "application"
     )
   }
 
@@ -25,12 +25,21 @@ class ConfigSpec extends FlatSpec with LazyLogging {
     )
   }
 
-  it should "cannot include wildcard template (i cannot find this feature in typesafehub/config)" in {
+  /*
+    it should "cannot include wildcard template (i cannot find this feature in typesafehub/config)" in {
+      val standard = ConfigFactory.load()
+      assertThrows[com.typesafe.config.ConfigException.Missing](
+        standard.getBoolean("debug.mode")
+      )
+    }
+  */
+
+  it should "override by java options" in {
+    logger.info("hello")
     val standard = ConfigFactory.load()
-    assertThrows[com.typesafe.config.ConfigException.Missing](
+    assert(
       standard.getBoolean("debug.mode")
     )
   }
-
 
 }
