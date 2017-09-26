@@ -1,3 +1,6 @@
+import sbt.Keys._
+import sbt.addCompilerPlugin
+
 name := "my_scala_scaffold"
 
 //autogenerate from dynver
@@ -59,6 +62,9 @@ lazy val root = (project in file("."))
   .settings(commonDependencies)
 
 
+lazy val `config-submodule-spec` = (project in file("config-submodule-spec"))
+  .dependsOn(root)
+
 lazy val avro_spec = project
   .settings(
     libraryDependencies ++= Seq(
@@ -67,3 +73,59 @@ lazy val avro_spec = project
   )
   .dependsOn(root)
 
+lazy val json_schema_spec = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.timeout" %% "docless" % "0.4.0"
+    )
+  )
+  .dependsOn(root)
+
+/*
+lazy val `datomic-spec` = project
+  .settings(
+    libraryDependencies ++= Seq(
+
+    )
+  )
+  .dependsOn(root)*/
+
+lazy val `longevity-spec` = (project in file("longevity-spec"))
+  .settings(
+    resolvers += Resolver.bintrayRepo("hseeberger", "maven")
+    , scalacOptions ++= Seq(
+      "-Xfuture",
+      "-Yno-adapted-args",
+      "-Ywarn-numeric-widen",
+      "-Ywarn-unused-import",
+      "-deprecation",
+      "-encoding", "UTF-8",
+      "-feature",
+      "-language:existentials",
+      "-language:higherKinds",
+      "-language:implicitConversions",
+      "-unchecked")
+    , libraryDependencies ++= {
+      val akkaHttpVersion = "10.0.3"
+      val akkaHttpJson4sVersion = "1.12.0"
+      val longevityVersion = "0.24.0"
+      val scalaTestVersion = "3.0.1"
+      val scalaTimeVersion = "2.16.0"
+      val slf4jSimpleVersion = "1.7.25"
+      Seq(
+        //"org.slf4j" % "slf4j-simple" % slf4jSimpleVersion,
+        //"com.github.nscala-time" %% "nscala-time" % scalaTimeVersion,
+        //"com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
+        //"de.heikoseeberger" %% "akka-http-json4s" % akkaHttpJson4sVersion,
+        //"org.longevityframework" %% "longevity-cassandra-deps" % longevityVersion,
+        "org.longevityframework" %% "longevity-mongodb-deps" % longevityVersion,
+        //"org.longevityframework" %% "longevity-sqlite-deps" % longevityVersion,
+        //"org.scalatest" %% "scalatest" % scalaTestVersion % Test
+
+        "org.longevityframework" %% "longevity" % longevityVersion
+      )
+    }
+    , addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+    , fork in run := true
+  )
+  .dependsOn(root)
