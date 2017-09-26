@@ -108,7 +108,7 @@ lazy val `longevity-spec` = (project in file("longevity-spec"))
     , libraryDependencies ++= {
       val akkaHttpVersion = "10.0.3"
       val akkaHttpJson4sVersion = "1.12.0"
-      val longevityVersion = "0.24.0"
+      val longevityVersion = "0.25.1"
       val scalaTestVersion = "3.0.1"
       val scalaTimeVersion = "2.16.0"
       val slf4jSimpleVersion = "1.7.25"
@@ -127,5 +127,13 @@ lazy val `longevity-spec` = (project in file("longevity-spec"))
     }
     , addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
     , fork in run := true
+  )
+  .dependsOn(root)
+
+lazy val `casbah-spec` = (project in file("casbah-spec"))
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.mongodb" %% "casbah" % "3.1.1"
+    )
   )
   .dependsOn(root)
