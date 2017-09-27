@@ -45,9 +45,9 @@ class ConfigSpec extends FlatSpec with LazyLogging {
   it should "merge test/main resource file" in {
     val standard = ConfigFactory.load()
     import ammonite.ops._
-    standard.getBoolean("spec.config.source-root.main") |> { x => s"spec.config.source-root.main: $x" } |> println
+    standard.getBoolean("spec.config.source-root.main") |> { x => println(s"spec.config.source-root.main: $x"); x } |> { x => assert(x) }
 
-    standard.getBoolean("spec.config.source-root.test") |> { x => s"spec.config.source-root.test: $x" } |> println
+    standard.getBoolean("spec.config.source-root.test") |> { x => println(s"spec.config.source-root.test: $x"); x } |> { x => assert(x) }
   }
 
 }
